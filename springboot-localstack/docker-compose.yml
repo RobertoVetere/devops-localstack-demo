@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  localstack:
+    image: localstack/localstack:latest  # Especifica la última versión de LocalStack
+    container_name: localstack_main
+    ports:
+      - "4566:4566"  # Puerto donde los servicios de LocalStack estarán disponibles
+      - "4510-4559:4510-4559"  # Opcional para acceder a servicios individuales
+    environment:
+      - SERVICES=s3,dynamodb,sns,sqs  # Servicios de AWS que deseas simular
+      - DEFAULT_REGION=us-east-1
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"  # Para interactuar con Docker desde LocalStack
