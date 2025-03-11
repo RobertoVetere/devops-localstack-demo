@@ -1,10 +1,13 @@
 package com.robedev.springboot_localstack.controller;
 
+import com.robedev.springboot_localstack.model.Product;
 import com.robedev.springboot_localstack.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -29,10 +32,17 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Product inserted");
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<String> getProduct(@RequestParam String productId) {
-        String product = productService.getProduct(productId);
-        return ResponseEntity.ok(product);
+    @GetMapping("/get-all-products")
+    public ResponseEntity<List<Product>> getAllProducts() {
+        // Obtener la lista de todos los productos desde el servicio
+        List<Product> products = productService.getAllProducts();
+
+        // Si la lista está vacía, devolver un 404 (no encontrado), si no devolver los productos con un 200 OK
+        if (products.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } else {
+            return ResponseEntity.ok(products);
+        }
     }
 }
 

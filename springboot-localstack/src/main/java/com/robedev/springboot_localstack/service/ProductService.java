@@ -1,10 +1,13 @@
 package com.robedev.springboot_localstack.service;
 
+import com.robedev.springboot_localstack.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -40,17 +43,27 @@ public class ProductService {
         dynamoDbClient.putItem(request);
     }
 
-    public String getProduct(String productId) {
-        GetItemRequest request = GetItemRequest.builder()
+    public List<Product> getAllProducts() {
+        // Crear la solicitud para escanear la tabla
+        ScanRequest scanRequest = ScanRequest.builder()
                 .tableName("Products")
-                .key(Map.of("ProductID", AttributeValue.builder().s(productId).build()))
                 .build();
 
-        GetItemResponse response = dynamoDbClient.getItem(request);
-        if (response.hasItem()) {
-            return response.item().get("ProductName").s();
-        } else {
-            return "Product not found";
+        // Obtener la respuesta de DynamoDB
+        ScanResponse scanResponse = dynamoDbClient.scan(scanRequest);
+
+        // Crear una lista para los productos
+        List<Product> products = new ArrayList<>();
+
+        // Iterar sobre los elementos escaneados y agregar a la lista
+        for (Map<String, AttributeValue> item : scanResponse.items()) {
+            String productId = item.get("ProductID").s();  // Obtén el productId
+            String productName = item.get("ProductName").s();  // Obtén el productName
+
+            // Crear un producto y agregarlo a la lista
+            products.add(new Product(productId, productName));  // Agrega productId
         }
+
+        return products;
     }
 }

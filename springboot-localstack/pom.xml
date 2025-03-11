@@ -28,7 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
-		<aws.sdk.version>2.30.36</aws.sdk.version> <!-- Define la versión 2.30.36 del SDK -->
+		<aws.sdk.version>2.30.36</aws.sdk.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -57,18 +57,10 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- Elimina la versión anterior del SDK de AWS 1.x -->
-		<!-- Reemplázalo con las dependencias de AWS SDK 2.x necesarias -->
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
 			<artifactId>dynamodb</artifactId>
@@ -88,8 +80,7 @@
 				<configuration>
 					<annotationProcessorPaths>
 						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
+
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
@@ -100,8 +91,7 @@
 				<configuration>
 					<excludes>
 						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
+
 						</exclude>
 					</excludes>
 				</configuration>
